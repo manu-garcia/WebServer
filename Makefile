@@ -4,7 +4,7 @@ NAME_SAN 	= webserv_sanitized
 CC		= c++
 
 SAN 	= -fsanitize=address -g3
-CFLAGS 	= -Wall -Werror -Wno-error=implicit-fallthrough -Wextra -std=c++98 --pedantic -MD -g3
+CFLAGS 	= -Wall -Werror -Wno-error=implicit-fallthrough -Wextra -Wreturn-stack-address -std=c++98 --pedantic -MD -g3
 RM 		= rm -rf
 
 SRCS_MAIN = ./
@@ -26,28 +26,28 @@ OBJS_S := $(addprefix $(OBJS_SAN), $(notdir $(SRCS:.cpp=.o)))
 all: ccinfo $(NAME)
 
 $(NAME): $(OBJS)
-		@$(CC) $(CFLAGS) $^ -o $@ 
+		@$(CC) $(CFLAGS) $^ -o $@
 		@echo "\n\033[92m"-------------\\n👌 COMPILED 👌\\n-------------\\n"\033[0m\n"
 
-$(OBJS_DIR)%.o: $(SRCS_MAIN)%.cpp 
+$(OBJS_DIR)%.o: $(SRCS_MAIN)%.cpp
 		@mkdir -p $(OBJS_DIR)
 		@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.cpp 
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.cpp
 		@mkdir -p $(OBJS_DIR)
 		@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 san: $(NAME_SAN)
 
 $(NAME_SAN): $(OBJS_S)
-		@$(CC) $(CFLAGS) $(SAN) $^ -o $@ 
+		@$(CC) $(CFLAGS) $(SAN) $^ -o $@
 		@echo "\n\033[92m"--------------\\n👌 SANITIZED 👌\\n--------------\\n"\033[0m\n"
 
-$(OBJS_SAN)%.o: $(SRCS_MAIN)%.cpp 
+$(OBJS_SAN)%.o: $(SRCS_MAIN)%.cpp
 		@mkdir -p $(OBJS_SAN)
 		@$(CC) $(CFLAGS) $(SAN) $(INCLUDES) -c $< -o $@
 
-$(OBJS_SAN)%.o: $(SRCS_DIR)%.cpp 
+$(OBJS_SAN)%.o: $(SRCS_DIR)%.cpp
 		@mkdir -p $(OBJS_SAN)
 		@$(CC) $(CFLAGS) $(SAN) $(INCLUDES) -c $< -o $@
 
@@ -65,7 +65,7 @@ fclean: clean
 
 re: fclean all
 
-ccinfo: 
+ccinfo:
 		@$(CC) -v
 
 -include $(OBJS_DIR)/*.d
