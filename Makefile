@@ -4,7 +4,15 @@ NAME_SAN 	= webserv_sanitized
 CC		= c++
 
 SAN 	= -fsanitize=address -g3
-CFLAGS 	= -Wall -Werror -Wno-error=implicit-fallthrough -Wextra -Wreturn-stack-address -std=c++98 --pedantic -MD -g3
+
+CFLAGS 	= -Wall -Werror -Wno-error=implicit-fallthrough -Wextra -std=c++98 --pedantic -MD -g3
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+CFLAGS += -Wreturn-stack-address
+else
+CFLAGS += -Wreturn-local-addr
+endif
+
 RM 		= rm -rf
 
 SRCS_MAIN = ./
