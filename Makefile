@@ -1,7 +1,7 @@
 NAME 		= webserv
 NAME_SAN 	= webserv_sanitized
 
-CC		= c++
+CC		= clang
 
 SAN 	= -fsanitize=address -g3
 
