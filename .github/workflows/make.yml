@@ -19,10 +19,14 @@ jobs:
         run: printenv
 
       - name: Build application (sanitize)
+        env:
+          CC: clang
         run: make san
 
       - name: Cleans sanitize
         run: make fclean
 
       - name: Build application
+        env:
+          CC: clang
         run: make
